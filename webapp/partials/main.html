@@ -287,26 +287,6 @@
             </div>
         </div>
         
-        <!-- ADD FILE DROP ZONE (renamed) -->
-        <div class="row" ng-show="!isFeatureForced('text') && mode == 'upload'">
-            <div class="col-sm-12">
-                <div class="tile">
-                    <h4 class="task-heading">Add attachments</h4>
-                    <div id="drop-zone"
-                         ngf-select="onFileSelect($files)"
-                         ngf-drop="onFileDrop($files,$event)"
-                         ngf-multiple="true"
-                         ngf-drag-over-class="drag-over">
-                        <div class="drop-zone-content">
-                            <i class="glyphicon glyphicon-cloud-upload"></i>
-                            <h3>Drop files here</h3>
-                            <p>or click to browse files</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
         <!-- FILE LIST (renamed to attachments) -->
         <div class="row">
             <div class="col-sm-12">

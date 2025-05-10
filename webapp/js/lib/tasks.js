@@ -8,14 +8,8 @@ angular.module('tasks', []).factory('$tasks', function () {
         if (storedTasks) {
             return JSON.parse(storedTasks);
         } else {
-            // Default tasks
-            return [
-                { id: 1, title: "Prepare meeting slides", completed: false, project: "Marketing" },
-                { id: 2, title: "Review documentation", completed: true, project: "Development" },
-                { id: 3, title: "Submit client brief", completed: false, project: "Design" },
-                { id: 4, title: "Create weekly report", completed: false, project: "Marketing" },
-                { id: 5, title: "Update team roadmap", completed: false, project: "Development" }
-            ];
+            // Empty list by default
+            return [];
         }
     };
     
