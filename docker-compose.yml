@@ -11,6 +11,7 @@ services:
       - "80:8080"  # Map to standard HTTP port for easier access
     volumes:
       - todotrack-data:/home/todotrack/server/files
+      - todotrack-db:/home/todotrack/server  # For SQLite database persistence
     restart: always  # Always restart for better reliability
     environment:
       # You can override config here if needed
@@ -26,4 +27,6 @@ services:
 
 volumes:
   todotrack-data:
-    # This will create a named volume for persistent storage 
+    # Volume for file storage
+  todotrack-db:
+    # Volume for database persistence 

@@ -13,8 +13,8 @@ RUN make clean-frontend frontend
 ##################################################################################
 FROM --platform=$BUILDPLATFORM golang:1-bullseye AS todotrack-builder
 
-# Install needed binaries
-RUN apt-get update && apt-get install -y build-essential
+# Install needed binaries and SQLite dependencies for CGO
+RUN apt-get update && apt-get install -y build-essential libsqlite3-dev
 
 # Prepare the source location
 RUN mkdir -p /go/src/github.com/root-gg/plik
@@ -26,12 +26,13 @@ COPY --from=todotrack-frontend-builder /webapp/dist webapp/dist
 # Add the source code ( see .dockerignore )
 COPY . .
 
-# Build the server binary explicitly for linux/amd64
+# Build the server binary with CGO enabled for SQLite support
 RUN mkdir -p release/server && \
     mkdir -p release/clients && \
     mkdir -p release/changelog && \
     mkdir -p release/webapp && \
-    CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -o release/server/plikd server/main.go && \
+    # Enable CGO for SQLite support
+    CGO_ENABLED=1 GOOS=linux GOARCH=amd64 go build -o release/server/plikd server/main.go && \
     # Verify the binary exists and is executable
     chmod +x release/server/plikd && \
     ls -la release/server/ && \
@@ -43,25 +44,27 @@ RUN mkdir -p release/server && \
     mkdir -p release/server/files
 
 ##################################################################################
-FROM alpine:3.18 AS todotrack-image
+FROM debian:bullseye-slim AS todotrack-image
 
 LABEL maintainer="ankitosm"
 LABEL description="TodoTrack - Task management with secure file sharing"
 
-RUN apk add --no-cache ca-certificates
+# Install SQLite and other needed dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends \
+    ca-certificates \
+    sqlite3 \
+    libsqlite3-0 \
+    wget && \
+    apt-get clean && \
+    rm -rf /var/lib/apt/lists/*
 
 # Create todotrack user
 ENV USER=todotrack
 ENV UID=1000
 
-# See https://stackoverflow.com/a/55757473/12429735
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/home/todotrack" \
-    --shell "/bin/false" \
-    --uid "${UID}" \
-    "${USER}"
+# Create todotrack user
+RUN useradd -u ${UID} -m -s /bin/false ${USER}
 
 # Copy files from builder
 COPY --from=todotrack-builder --chown=1000:1000 /go/src/github.com/root-gg/plik/release /home/todotrack/
