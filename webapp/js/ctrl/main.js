@@ -90,14 +90,80 @@ plik.controller('MainCtrl', ['$scope', '$api', '$config', '$route', '$location',
         
         // Scroll to drop zone when attachment button is clicked
         $scope.scrollToDropZone = function() {
-            // Using jQuery to scroll to the drop zone element
             $('html, body').animate({
                 scrollTop: $('#drop-zone').offset().top - 100
             }, 500);
         };
-        
+
+        // Initialize global drag and drop functionality
+        $scope.initGlobalDragDrop = function() {
+            // Create overlay element for drag and drop
+            var $overlay = $('<div id="global-drop-overlay"><div class="overlay-content"><i class="glyphicon glyphicon-cloud-upload"></i><h3>Drop files to attach</h3></div></div>');
+            $('body').append($overlay);
+            
+            // Handle document drag events
+            $(document).on('dragover', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Ignore events from existing drop zones
+                if ($(e.target).closest('#drop-zone, #drop-zone-download').length) {
+                    return;
+                }
+                
+                $overlay.addClass('show');
+            });
+            
+            $(document).on('dragleave', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Only hide when leaving document
+                if (e.pageX === 0 || e.pageY === 0 || 
+                    e.pageX >= $(window).width() || 
+                    e.pageY >= $(window).height()) {
+                    $overlay.removeClass('show');
+                }
+            });
+            
+            $(document).on('drop', function(e) {
+                // Prevent browser from opening files
+                e.preventDefault();
+                e.stopPropagation();
+                
+                // Ignore events from existing drop zones
+                if ($(e.target).closest('#drop-zone, #drop-zone-download').length) {
+                    return;
+                }
+                
+                $overlay.removeClass('show');
+                
+                // Process dropped files
+                var files = e.originalEvent.dataTransfer.files;
+                if (files.length > 0) {
+                    $scope.onFileSelect(Array.from(files));
+                    $scope.waterDrop(e);
+                    $scope.$apply();
+                    
+                    // Switch to upload mode if needed
+                    if ($scope.mode !== 'upload') {
+                        $scope.mode = 'upload';
+                        $scope.$apply();
+                    }
+                    
+                    // Scroll to the file list
+                    setTimeout(function() {
+                        $scope.scrollToDropZone();
+                    }, 300);
+                }
+            });
+        };
+
         // Initialize tasks
         $scope.initTasks();
+
+        // Initialize global drag and drop
+        $scope.initGlobalDragDrop();
 
         // File name checks
         var fileNameMaxLength = 1024;
