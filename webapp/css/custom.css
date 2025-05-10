@@ -123,6 +123,7 @@ header a:hover {
     display: flex !important;
     align-items: center !important;
     transition: background-color 0.2s ease !important;
+    position: relative !important;
 }
 
 .todo-item:hover {
@@ -408,4 +409,64 @@ footer {
     #drop-zone {
         min-height: 120px !important;
     }
+}
+
+/* Add task input styling */
+.todo-add-task {
+    margin-bottom: 15px !important;
+    margin-top: 15px !important;
+}
+
+.todo-add-task .input-group {
+    width: 100% !important;
+}
+
+.todo-add-task input {
+    border-radius: 8px 0 0 8px !important;
+    padding: 10px !important;
+    border: 1px solid #e2e8f0 !important;
+}
+
+.todo-add-task button {
+    border-radius: 0 8px 8px 0 !important;
+    padding: 10px !important;
+    background-color: #3a73f9 !important;
+    border-color: #3a73f9 !important;
+}
+
+/* Project tag styling */
+.task-project-tag {
+    font-size: 11px !important;
+    background-color: #edf2fd !important;
+    color: #3a73f9 !important;
+    padding: 2px 6px !important;
+    border-radius: 10px !important;
+    margin-left: 8px !important;
+    font-weight: 500 !important;
+}
+
+/* Empty state styling */
+.todo-empty {
+    padding: 20px 0 !important;
+    font-style: italic !important;
+}
+
+/* Delete button styling */
+.btn-task-delete {
+    opacity: 0;
+    position: absolute !important;
+    right: 0 !important;
+    top: 50% !important;
+    transform: translateY(-50%) !important;
+    background: none !important;
+    border: none !important;
+    color: #ef4444 !important;
+    font-size: 14px !important;
+    cursor: pointer !important;
+    transition: opacity 0.2s !important;
+    padding: 5px !important;
+}
+
+.todo-item:hover .btn-task-delete {
+    opacity: 1;
 }

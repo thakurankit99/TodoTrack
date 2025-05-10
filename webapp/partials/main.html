@@ -1,46 +1,38 @@
 <div id="maindiv" class="row">
     <!-- Left sidebar with Todo lists and settings -->
     <div class="col-sm-3 center-block">
-        <!-- FAKE TODO LIST PANEL -->
+        <!-- TODO LIST PANEL -->
         <div class="todo-panel" ng-if="mode == 'upload'">
             <h4 class="task-heading">My Tasks</h4>
             
             <!-- Project dropdown -->
             <div class="project-dropdown">
-                <select class="form-control">
-                    <option>All Projects</option>
-                    <option>Marketing</option>
-                    <option>Development</option>
-                    <option>Design</option>
+                <select class="form-control" ng-model="selectedProject" ng-change="filterByProject()">
+                    <option ng-repeat="project in availableProjects">{{project}}</option>
                 </select>
             </div>
             
-            <!-- Static Todo items -->
-            <div class="todo-item">
-                <input type="checkbox" class="todo-checkbox">
-                <span>Prepare meeting slides</span>
-            </div>
-            <div class="todo-item">
-                <input type="checkbox" checked class="todo-checkbox">
-                <span class="todo-completed">Review documentation</span>
-            </div>
-            <div class="todo-item">
-                <input type="checkbox" class="todo-checkbox">
-                <span>Submit client brief</span>
-            </div>
-            <div class="todo-item">
-                <input type="checkbox" class="todo-checkbox">
-                <span>Create weekly report</span>
-            </div>
-            <div class="todo-item">
-                <input type="checkbox" class="todo-checkbox">
-                <span>Update team roadmap</span>
+            <!-- Add new task -->
+            <div class="todo-add-task">
+                <div class="input-group">
+                    <input type="text" class="form-control" ng-model="newTaskText" placeholder="Add a new task..." ng-keyup="$event.keyCode == 13 && addTask()">
+                    <span class="input-group-btn">
+                        <button class="btn btn-primary" type="button" ng-click="addTask()"><i class="glyphicon glyphicon-plus"></i></button>
+                    </span>
+                </div>
             </div>
             
-            <!-- Todo actions -->
-            <div class="todo-actions">
-                <button class="btn btn-sm">Mark as Done</button>
-                <button class="btn btn-sm">Assign</button>
+            <!-- Task list -->
+            <div class="todo-item" ng-repeat="task in todoTasks">
+                <input type="checkbox" class="todo-checkbox" ng-checked="task.completed" ng-click="toggleTaskCompletion(task.id)">
+                <span ng-class="{'todo-completed': task.completed}">{{task.title}}</span>
+                <span class="task-project-tag" ng-if="task.project != 'General' && selectedProject == 'All Projects'">{{task.project}}</span>
+                <button class="btn-task-delete" ng-click="deleteTask(task.id)"><i class="glyphicon glyphicon-trash"></i></button>
+            </div>
+            
+            <!-- Empty state -->
+            <div class="todo-empty" ng-if="todoTasks.length === 0">
+                <p class="text-muted text-center">No tasks in this project yet. Add one above!</p>
             </div>
         </div>
         

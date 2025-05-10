@@ -1,6 +1,6 @@
 // Main controller
-plik.controller('MainCtrl', ['$scope', '$api', '$config', '$route', '$location', '$dialog', '$timeout', '$paste', '$q',
-    function ($scope, $api, $config, $route, $location, $dialog, $timeout, $paste, $q) {
+plik.controller('MainCtrl', ['$scope', '$api', '$config', '$route', '$location', '$dialog', '$timeout', '$paste', '$q', '$tasks',
+    function ($scope, $api, $config, $route, $location, $dialog, $timeout, $paste, $q, $tasks) {
         var discard = function (e) {
             // Avoid "Possibly unhandled rejection"
         };
@@ -16,6 +16,48 @@ plik.controller('MainCtrl', ['$scope', '$api', '$config', '$route', '$location',
         $scope.files = [];
         $scope.password = false;
         $scope.enableComments = false;
+        
+        // Task management
+        $scope.todoTasks = [];
+        $scope.newTaskText = "";
+        $scope.selectedProject = "All Projects";
+        $scope.availableProjects = [];
+        
+        // Initialize tasks
+        $scope.initTasks = function() {
+            $scope.todoTasks = $tasks.all();
+            $scope.availableProjects = $tasks.getProjects();
+        };
+        
+        // Add a new task
+        $scope.addTask = function() {
+            if (!$scope.newTaskText.trim()) return;
+            
+            var project = $scope.selectedProject === "All Projects" ? "General" : $scope.selectedProject;
+            $tasks.add($scope.newTaskText, project);
+            $scope.newTaskText = "";
+            $scope.todoTasks = $tasks.all();
+            $scope.availableProjects = $tasks.getProjects();
+        };
+        
+        // Toggle task completion
+        $scope.toggleTaskCompletion = function(taskId) {
+            $scope.todoTasks = $tasks.toggleCompletion(taskId);
+        };
+        
+        // Delete a task
+        $scope.deleteTask = function(taskId) {
+            $scope.todoTasks = $tasks.remove(taskId);
+            $scope.availableProjects = $tasks.getProjects();
+        };
+        
+        // Filter tasks by project
+        $scope.filterByProject = function() {
+            $scope.todoTasks = $tasks.byProject($scope.selectedProject);
+        };
+        
+        // Initialize tasks
+        $scope.initTasks();
 
         // File name checks
         var fileNameMaxLength = 1024;
