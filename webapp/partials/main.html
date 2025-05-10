@@ -187,23 +187,6 @@
             </div>
         </div>
         
-        <!-- ADD FILES BUTTON (renamed) -->
-        <div class="tile menu" ng-if="!isFeatureForced('text') && okToAddFiles()">
-            <div class="menu-item">
-                <div id="drop-zone-download"
-                     ngf-select="onFileSelect($files)"
-                     ngf-drop="onFileDrop($files,$event)"
-                     ngf-multiple="true"
-                     ngf-drag-over-class="drag-over">
-                    <!-- ADD FILE BUTTON -->
-                    <div class="drop-zone-content mini">
-                        <i class="fa fa-file"></i>
-                        <p>Drag files here or click to browse</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
         <!-- ADD TEXT BUTTON (renamed) -->
         <div class="tile menu" ng-if="isFeatureEnabled('text') && okToAddFiles()">
             <div class="menu-item">
