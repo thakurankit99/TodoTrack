@@ -25,3 +25,68 @@ header {
 footer {
     font-family: 'Kode Mono', sans-serif; !important;
 }*/
+
+/* TodoTrack custom styling */
+.todo-panel {
+    background-color: #fff;
+    border-radius: 3px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+.todo-item {
+    padding: 8px 0;
+    border-bottom: 1px solid #f0f0f0;
+    display: flex;
+    align-items: center;
+}
+
+.todo-item:last-child {
+    border-bottom: none;
+}
+
+.todo-checkbox {
+    margin-right: 10px;
+}
+
+.todo-completed {
+    text-decoration: line-through;
+    color: #888;
+}
+
+.project-dropdown {
+    margin-bottom: 15px;
+}
+
+.todo-actions {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+}
+
+.date-selector {
+    margin-bottom: 15px;
+}
+
+.task-heading {
+    color: #333;
+    margin-bottom: 20px;
+    font-weight: 500;
+}
+
+/* Rename some Plik UI elements for consistency */
+#drop-zone:before {
+    content: "Drag tasks or documents here" !important;
+}
+
+/* Change background color to be more todo-app like */
+body {
+    background-color: #f9f9f9 !important;
+}
+
+/* Style for the task attachment button (formerly "add files") */
+.btn-task {
+    background-color: #5cb85c !important;
+    border-color: #4cae4c !important;
+}

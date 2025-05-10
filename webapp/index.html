@@ -1,14 +1,13 @@
-
 <!DOCTYPE html>
 <html ng-app="plik">
 <head>
     <!-- META -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="temporary file upload service">
-    <meta name="author" content="Mathieu Bodjikian, Charles-Antoine Mathieu">
+    <meta name="description" content="Internal task board for submitting and reviewing work-related notes and documents.">
+    <meta name="author" content="TodoTrack Team">
 
-    <title ng-bind="title"></title>
+    <title ng-bind="title + ' | Team Dashboard'"></title>
 
     <!-- CSS -->
     <link href="css/vendor.css" rel="stylesheet" type="text/css">
@@ -25,13 +24,13 @@
     <header ng-controller="MenuCtrl">
         <div class="container-fluid">
             <div class="row">
-                <!-- PLIK LOGO -->
+                <!-- LOGO -->
                 <div class="col-sm-3 text-center">
                     <h1><a href="#/_">{{title}}</a></h1>
                 </div>
                 <!-- TOP MENU -->
                 <div class="col-sm-9 text-right hidden-xs">
-                    <a ng-if="auth_button && isFeatureEnabled('authentication') && !user" href="#/login"><i class="fa fa-lock"></i> Authentication</a>
+                    <a ng-if="auth_button && isFeatureEnabled('authentication') && !user" href="#/login"><i class="fa fa-lock"></i> Sign In</a>
                     <a ng-if="isFeatureEnabled('authentication') && user" href="#/login">{{user.login}}</a>
                     &nbsp;
                     <a ng-if="isFeatureEnabled('authentication') && user && user.admin" href="#/admin"><i class="fa fa-wrench"></i> Admin&nbsp;</a>
@@ -40,7 +39,7 @@
                 </div>
                 <!-- TOP MENU ( mobile ) -->
                 <div class="col-sm-9 text-center hidden-sm hidden-md hidden-lg">
-                    <a ng-if="config.authentication && !user" href="#/login"><i class="fa fa-lock"></i> Authentication</a>
+                    <a ng-if="config.authentication && !user" href="#/login"><i class="fa fa-lock"></i> Sign In</a>
                     <a ng-if="config.authentication && user" href="#/login">{{user.login}}</a>
                 </div>
             </div>
@@ -54,7 +53,7 @@
 <!-- FOOTER -->
 <footer class="footer" ng-controller="MenuCtrl">
     <div ng-if="config.abuseContact" class="container text-center">
-        <p>For abuse contact {{config.abuseContact}}</p>
+        <p>For support contact {{config.abuseContact}}</p>
     </div>
 </footer>
 
