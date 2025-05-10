@@ -26,67 +26,386 @@ footer {
     font-family: 'Kode Mono', sans-serif; !important;
 }*/
 
-/* TodoTrack custom styling */
-.todo-panel {
-    background-color: #fff;
-    border-radius: 3px;
-    padding: 15px;
-    margin-bottom: 20px;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+/* TodoTrack Modern UI - Custom Styling */
+
+/* Import modern Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* Global reset and base styles */
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif !important;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4e9f2 100%) !important;
+    color: #333;
+    line-height: 1.6;
 }
 
+/* Modern header styling */
+header {
+    background-color: #ffffff !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.05) !important;
+    padding: 15px 0 !important;
+    margin-bottom: 30px !important;
+}
+
+header h1 a {
+    color: #3a73f9 !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.5px !important;
+    transition: all 0.2s ease !important;
+}
+
+header h1 a:hover {
+    opacity: 0.85 !important;
+    text-decoration: none !important;
+}
+
+/* Menu links */
+header a {
+    color: #5a6887 !important;
+    font-weight: 500 !important;
+    margin-left: 20px !important;
+    transition: all 0.2s ease !important;
+}
+
+header a:hover {
+    color: #3a73f9 !important;
+    text-decoration: none !important;
+}
+
+/* Task panel styling */
+.todo-panel {
+    background-color: #fff !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    margin-bottom: 25px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+    border: none !important;
+    transition: transform 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+.todo-panel:hover {
+    transform: translateY(-3px) !important;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08) !important;
+}
+
+/* Task heading style */
+.task-heading {
+    color: #2c3e50 !important;
+    margin-bottom: 20px !important;
+    font-weight: 600 !important;
+    letter-spacing: -0.3px !important;
+    font-size: 18px !important;
+}
+
+/* Dropdown styling */
+.project-dropdown {
+    margin-bottom: 20px !important;
+}
+
+.project-dropdown select, .form-control {
+    border-radius: 8px !important;
+    border: 1px solid #e2e8f0 !important;
+    padding: 8px 12px !important;
+    box-shadow: none !important;
+    font-size: 14px !important;
+    transition: all 0.2s ease !important;
+}
+
+.project-dropdown select:focus, .form-control:focus {
+    border-color: #3a73f9 !important;
+    box-shadow: 0 0 0 3px rgba(58, 115, 249, 0.15) !important;
+}
+
+/* Task items styling */
 .todo-item {
-    padding: 8px 0;
-    border-bottom: 1px solid #f0f0f0;
-    display: flex;
-    align-items: center;
+    padding: 12px 0 !important;
+    border-bottom: 1px solid #f0f5fa !important;
+    display: flex !important;
+    align-items: center !important;
+    transition: background-color 0.2s ease !important;
+}
+
+.todo-item:hover {
+    background-color: #f8fafd !important;
 }
 
 .todo-item:last-child {
-    border-bottom: none;
+    border-bottom: none !important;
 }
 
+/* Checkbox styling */
 .todo-checkbox {
-    margin-right: 10px;
+    margin-right: 12px !important;
+    width: 18px !important;
+    height: 18px !important;
+    border-radius: 4px !important;
+    border: 2px solid #cbd5e0 !important;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    cursor: pointer !important;
+    position: relative !important;
+    transition: all 0.2s ease !important;
+}
+
+.todo-checkbox:checked {
+    background-color: #3a73f9 !important;
+    border-color: #3a73f9 !important;
+}
+
+.todo-checkbox:checked::after {
+    content: '✓' !important;
+    position: absolute !important;
+    color: white !important;
+    font-size: 12px !important;
+    top: -2px !important;
+    left: 3px !important;
 }
 
 .todo-completed {
-    text-decoration: line-through;
-    color: #888;
+    text-decoration: line-through !important;
+    color: #a0aec0 !important;
 }
 
-.project-dropdown {
-    margin-bottom: 15px;
-}
-
+/* Todo action buttons */
 .todo-actions {
-    display: flex;
-    justify-content: space-between;
-    padding: 10px 0;
+    display: flex !important;
+    justify-content: space-between !important;
+    padding: 15px 0 5px 0 !important;
 }
 
+.todo-actions button {
+    border-radius: 6px !important;
+    font-size: 13px !important;
+    padding: 6px 12px !important;
+    font-weight: 500 !important;
+    transition: all 0.2s ease !important;
+    background-color: #f1f5f9 !important;
+    border: 1px solid #e2e8f0 !important;
+    color: #4a5568 !important;
+}
+
+.todo-actions button:hover {
+    background-color: #e2e8f0 !important;
+    transform: translateY(-1px) !important;
+}
+
+/* Date selector styling */
 .date-selector {
-    margin-bottom: 15px;
+    margin-bottom: 20px !important;
 }
 
-.task-heading {
-    color: #333;
-    margin-bottom: 20px;
-    font-weight: 500;
+.date-selector label {
+    display: block !important;
+    margin-bottom: 6px !important;
+    font-size: 14px !important;
+    color: #5a6887 !important;
+    font-weight: 500 !important;
 }
 
-/* Rename some Plik UI elements for consistency */
+/* Task file zone styling */
+#drop-zone {
+    background-color: #f8fafc !important;
+    border: 2px dashed #cbd5e0 !important;
+    border-radius: 12px !important;
+    padding: 40px 20px !important;
+    text-align: center !important;
+    color: #64748b !important;
+    font-size: 16px !important;
+    transition: all 0.3s ease !important;
+    cursor: pointer !important;
+    min-height: 180px !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+#drop-zone:hover, #drop-zone.drag-over {
+    border-color: #3a73f9 !important;
+    background-color: #f0f7ff !important;
+}
+
 #drop-zone:before {
     content: "Drag tasks or documents here" !important;
+    font-weight: 500 !important;
 }
 
-/* Change background color to be more todo-app like */
-body {
-    background-color: #f9f9f9 !important;
+/* Button styling */
+.btn {
+    border-radius: 8px !important;
+    font-weight: 500 !important;
+    padding: 10px 16px !important;
+    transition: all 0.2s ease !important;
+    letter-spacing: -0.2px !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
 }
 
-/* Style for the task attachment button (formerly "add files") */
+.btn:hover {
+    transform: translateY(-2px) !important;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
+}
+
+.btn-primary {
+    background-color: #3a73f9 !important;
+    border-color: #3a73f9 !important;
+}
+
+.btn-primary:hover {
+    background-color: #2962ff !important;
+    border-color: #2962ff !important;
+}
+
+.btn-success {
+    background-color: #10b981 !important;
+    border-color: #10b981 !important;
+}
+
+.btn-success:hover {
+    background-color: #059669 !important;
+    border-color: #059669 !important;
+}
+
+.btn-danger {
+    background-color: #ef4444 !important;
+    border-color: #ef4444 !important;
+}
+
+.btn-danger:hover {
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
+}
+
+/* Task attachment button */
 .btn-task {
-    background-color: #5cb85c !important;
-    border-color: #4cae4c !important;
+    background-color: #3a73f9 !important;
+    border-color: #3a73f9 !important;
+}
+
+/* File panels */
+.panel {
+    border: none !important;
+    border-radius: 10px !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    transition: all 0.2s ease !important;
+    margin-bottom: 15px !important;
+}
+
+.panel:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1) !important;
+}
+
+.panel-heading {
+    background-color: #f8fafc !important;
+    border-bottom: 1px solid #f0f5fa !important;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 12px 15px !important;
+}
+
+.panel-body {
+    padding: 15px !important;
+}
+
+/* Progress bar */
+.progress {
+    height: 8px !important;
+    border-radius: 4px !important;
+    margin: 15px 0 !important;
+    background-color: #e2e8f0 !important;
+    overflow: hidden !important;
+}
+
+.progress-bar {
+    background-color: #3a73f9 !important;
+    border-radius: 4px !important;
+}
+
+/* Footer styling */
+footer {
+    background: transparent !important;
+    padding: 15px 0 !important;
+    margin-top: 30px !important;
+    color: #64748b !important;
+    font-size: 14px !important;
+}
+
+/* Alert messages */
+.alert {
+    border-radius: 10px !important;
+    padding: 15px 20px !important;
+    border: none !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05) !important;
+    margin-bottom: 20px !important;
+}
+
+/* Menu switch toggles */
+.switch-input {
+    display: flex !important;
+    align-items: center !important;
+    margin-bottom: 12px !important;
+    cursor: pointer !important;
+    font-weight: 500 !important;
+    color: #4a5568 !important;
+}
+
+.switch-input i {
+    position: relative !important;
+    display: inline-block !important;
+    width: 38px !important;
+    height: 20px !important;
+    background-color: #cbd5e0 !important;
+    border-radius: 10px !important;
+    margin-right: 10px !important;
+    transition: all 0.3s ease !important;
+}
+
+.switch-input i:before, .switch-input i:after {
+    content: "" !important;
+    position: absolute !important;
+}
+
+.switch-input i:before {
+    top: 2px !important;
+    left: 2px !important;
+    width: 16px !important;
+    height: 16px !important;
+    background-color: #fff !important;
+    border-radius: 50% !important;
+    transition: all 0.3s ease !important;
+}
+
+.switch-input input {
+    display: none !important;
+}
+
+.switch-input input:checked + i {
+    background-color: #3a73f9 !important;
+}
+
+.switch-input input:checked + i:before {
+    transform: translateX(18px) !important;
+}
+
+/* Tile redesign */
+.tile {
+    background-color: #fff !important;
+    border-radius: 12px !important;
+    padding: 20px !important;
+    margin-bottom: 25px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06) !important;
+    border: none !important;
+}
+
+/* Text muted */
+.text-muted {
+    color: #64748b !important;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .todo-panel, .tile {
+        padding: 15px !important;
+    }
+    
+    #drop-zone {
+        min-height: 120px !important;
+    }
 }

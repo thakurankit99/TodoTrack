@@ -1,82 +1,265 @@
-<div id="maindiv" class="row main-wrapper">
-    <!-- Main Content Area (Centered, Modern style) -->
-    <div class="col-sm-12">
-        <!-- UPLOAD SECTION (Masking as Task Creation) -->
-        <div ng-if="mode == 'upload'">
-            <!-- TodoTrack Logo -->
-            <div class="todotrack-logo">
-                <i class="fas fa-tasks"></i>
+<div id="maindiv" class="row">
+    <!-- Left sidebar with Todo lists and settings -->
+    <div class="col-sm-3 center-block">
+        <!-- FAKE TODO LIST PANEL -->
+        <div class="todo-panel" ng-if="mode == 'upload'">
+            <h4 class="task-heading">My Tasks</h4>
+            
+            <!-- Project dropdown -->
+            <div class="project-dropdown">
+                <select class="form-control">
+                    <option>All Projects</option>
+                    <option>Marketing</option>
+                    <option>Development</option>
+                    <option>Design</option>
+                </select>
             </div>
             
-            <h2 class="task-heading">My Task List</h2>
+            <!-- Static Todo items -->
+            <div class="todo-item">
+                <input type="checkbox" class="todo-checkbox">
+                <span>Prepare meeting slides</span>
+            </div>
+            <div class="todo-item">
+                <input type="checkbox" checked class="todo-checkbox">
+                <span class="todo-completed">Review documentation</span>
+            </div>
+            <div class="todo-item">
+                <input type="checkbox" class="todo-checkbox">
+                <span>Submit client brief</span>
+            </div>
+            <div class="todo-item">
+                <input type="checkbox" class="todo-checkbox">
+                <span>Create weekly report</span>
+            </div>
+            <div class="todo-item">
+                <input type="checkbox" class="todo-checkbox">
+                <span>Update team roadmap</span>
+            </div>
             
-            <!-- Task Summary Cards -->
-            <div class="row" ng-if="!files.length">
-                <div class="col-sm-12">
-                    <div class="summary-cards">
-                        <div class="summary-card">
-                            <div class="card-count">4</div>
-                            <div class="card-label">Total Tasks</div>
+            <!-- Todo actions -->
+            <div class="todo-actions">
+                <button class="btn btn-sm">Mark as Done</button>
+                <button class="btn btn-sm">Assign</button>
+            </div>
+        </div>
+        
+        <!-- UPLOAD MENU (renamed as task settings) -->
+        <div class="tile menu" ng-if="mode == 'upload'">
+            <h4 class="task-heading">Task Settings</h4>
+            
+            <!-- Date selector for tasks -->
+            <div class="date-selector">
+                <label>Due date:</label>
+                <input type="date" class="form-control">
+            </div>
+            
+            <!-- ONE SHOT (renamed) -->
+            <div class="menu-item" ng-show="isFeatureEnabled('one_shot')">
+                <label class="switch-input">
+                    <input name="checkbox-destruct" type="checkbox" ng-model="upload.oneShot" ng-disabled="isFeatureForced('one_shot')">
+                    <i data-swoff-text="OFF" data-swon-text="ON"></i> Delete after first view
+                    <a tooltip-placement="right"
+                       uib-tooltip="The task will be removed after being viewed once.">?</a>
+                </label>
+            </div>
+            
+            <!-- STREAMING (renamed) -->
+            <div class="menu-item" ng-show="isFeatureEnabled('stream')">
+                <label class="switch-input">
+                    <input name="checkbox-destruct" type="checkbox" ng-model="upload.stream" ng-disabled="isFeatureForced('stream')">
+                    <i data-swoff-text="OFF" data-swon-text="ON"></i> Real-time sharing
+                    <a tooltip-placement="right"
+                       uib-tooltip="The attachments won't be stored - they'll be shared in real-time when viewed.">?</a>
+                </label>
+            </div>
+            
+            <!-- REMOVABLE (renamed) -->
+            <div class="menu-item" ng-show="isFeatureEnabled('removable')">
+                <label class="switch-input">
+                    <input name="checkbox-removable" type="checkbox" ng-model="upload.removable" ng-disabled="isFeatureForced('removable')">
+                    <i data-swoff-text="OFF" data-swon-text="ON"></i> Allow deletion
+                    <a tooltip-placement="right"
+                       uib-tooltip="Allow task to be deleted at any time.">?</a>
+                </label>
+            </div>
+            
+            <!-- PASSWORD (renamed) -->
+            <div class="menu-item" ng-show="isFeatureEnabled('password')">
+                <label class="switch-input">
+                    <input name="checkbox-password" type="checkbox" ng-model="$parent.password"
+                           ng-change="upload.password = ''" ng-disabled="isFeatureForced('password')">
+                    <i data-swoff-text="OFF" data-swon-text="ON"></i> Require password
+                    <a tooltip-placement="right"
+                       uib-tooltip="Password protect this task and its attachments.">?</a>
+                </label>
+            </div>
+            
+            <!-- EXTEND TTL (renamed) -->
+            <div class="menu-item" ng-show="isFeatureEnabled('extend_ttl')">
+                <label class="switch-input">
+                    <input name="checkbox-removable" type="checkbox" ng-model="upload.extend_ttl" ng-disabled="isFeatureForced('extend_ttl')">
+                    <i data-swoff-text="OFF" data-swon-text="ON"></i> Extend deadline on view
+                    <a tooltip-placement="right"
+                       uib-tooltip="Extend task deadline when viewed.">?</a>
+                </label>
+            </div>
+            
+            <!-- COMMENTS (renamed) -->
+            <div class="menu-item" ng-show="isFeatureEnabled('comments')">
+                <label class="switch-input">
+                    <input name="checkbox-comments" type="checkbox" ng-model="enableComments" ng-disabled="isFeatureForced('comments')">
+                    <i data-swoff-text="OFF" data-swon-text="ON"></i> Task notes
+                    <a tooltip-placement="right"
+                       uib-tooltip="Add notes to the task. Markdown is supported.">?</a>
+                </label>
+            </div>
+            
+            <div class="menu-item" ng-if="enableComments=='1'">
+                <textarea class="form-control" ng-model="upload.comments" placeholder="Add task notes here..."></textarea>
+            </div>
+            
+            <!-- EXPIRATION TIME (renamed) -->
+            <div class="menu-item">
+                <p></p>
+
+                <div class="" style="text-align:center;">
+                    <form class="form-inline">
+                        <div class="form-group">
+                            Task will expire in 
+                            <div style="display:inline-block;">
+                                <input class="form-control" style="width:60px;display:inline-block;" type="number"
+                                       ng-model="$parent.ttlValue" ng-show="ttlUnit != 'unlimited'"
+                                       ng-disabled="!isFeatureEnabled('set_ttl')">
+                                <select class="form-control" style="width:auto;display:inline-block;"
+                                        ng-options="unit as unit for unit in ttlUnits"
+                                        ng-model="$parent.ttlUnit"
+                                        ng-disabled="!isFeatureEnabled('set_ttl')"></select>
+                            </div>
                         </div>
-                        <div class="summary-card">
-                            <div class="card-count">1</div>
-                            <div class="card-label">Completed</div>
-                        </div>
-                        <div class="summary-card">
-                            <div class="card-count">2</div>
-                            <div class="card-label">In Progress</div>
-                        </div>
-                    </div>
+                    </form>
                 </div>
             </div>
             
-            <!-- Task List Preview (static) -->
-            <div class="row" ng-if="!files.length">
-                <div class="col-sm-12">
-                    <div class="tile task-list-preview">
-                        <div class="task-item">
-                            <div class="task-checkbox">
-                                <input type="checkbox" checked>
-                            </div>
-                            <div class="task-content">
-                                <div class="task-title completed">Review project documentation</div>
-                                <div class="task-meta">Yesterday • Marketing</div>
-                            </div>
-                        </div>
-                        <div class="task-item">
-                            <div class="task-checkbox">
-                                <input type="checkbox">
-                            </div>
-                            <div class="task-content">
-                                <div class="task-title">Prepare client presentation slides</div>
-                                <div class="task-meta">Due tomorrow • Priority: High</div>
-                            </div>
-                        </div>
-                        <div class="task-item">
-                            <div class="task-checkbox">
-                                <input type="checkbox">
-                            </div>
-                            <div class="task-content">
-                                <div class="task-title">Submit quarterly report</div>
-                                <div class="task-meta">Due in 3 days • Finance</div>
-                            </div>
-                        </div>
-                        <div class="task-item">
-                            <div class="task-checkbox">
-                                <input type="checkbox">
-                            </div>
-                            <div class="task-content">
-                                <div class="task-title">Review website mockups</div>
-                                <div class="task-meta">Due next week • Design</div>
-                            </div>
-                        </div>
+            <!-- CREATE EMPTY UPLOAD (renamed) -->
+            <div class="menu-item">
+                <p></p>
+
+                <div class="" style="text-align:center;">
+                    <a href="" class="small" ng-click="newUpload(true);"
+                       tooltip-placement="bottom" uib-tooltip="Create a task without attachments yet.">
+                        Create empty task
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <!-- DOWNLOAD MENU (renamed to task details) -->
+        <div class="tile menu" ng-if="mode == 'download'">
+            <h4 class="task-heading">Task Details</h4>
+            
+            <!-- QR CODE -->
+            <div class="text-center hidden-xs hidden-sm" ng-click="displayQRCodeUpload()">
+                <p><img ng-src="{{getQrCodeUploadUrl(200)}}" alt="QR Code" style="border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"/></p>
+            </div>
+            
+            <!-- EXPIRATION DATE -->
+            <div class="menu-item" ng-show="upload.ttl != 0">
+                <p class="text-center">This task will {{ getExpirationDate() }}</p>
+            </div>
+            
+            <div class="menu-item text-center" ng-if="displayAdminUrlLink()">
+                <a href="" class="small" ng-click="setAdminUrl()"
+                   tooltip-placement="bottom" uib-tooltip="Get admin access to manage this task.">
+                    Admin access
+                </a>
+            </div>
+        </div>
+        
+        <!-- Action Buttons Group -->
+        <div class="tile menu" ng-if="mode == 'download' && somethingToDownload() && !upload.stream">
+            <!-- DOWNLOAD AS ZIP BUTTON (renamed) -->
+            <div class="menu-item">
+                <a href="{{getZipArchiveUrl()}}">
+                    <button type="button" class="btn btn-lg btn-primary btn-block">
+                        <i class="glyphicon glyphicon-cloud-download"></i> Download All
+                    </button>
+                </a>
+            </div>
+            
+            <!-- COPY LINK BUTTON -->
+            <div class="menu-item">
+                <div>
+                    <button type="button" class="btn btn-lg btn-primary btn-block"
+                        data-clipboard data-clipboard-text="{{getZipArchiveUrl()}}">
+                        <i class="glyphicon glyphicon-copy"></i> Copy link
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ADD FILES BUTTON (renamed) -->
+        <div class="tile menu" ng-if="!isFeatureForced('text') && okToAddFiles()">
+            <div class="menu-item">
+                <div id="drop-zone-download"
+                     ngf-select="onFileSelect($files)"
+                     ngf-drop="onFileDrop($files,$event)"
+                     ngf-multiple="true"
+                     ngf-drag-over-class="drag-over">
+                    <!-- ADD FILE BUTTON -->
+                    <button type="button" class="btn btn-lg btn-primary btn-task btn-block">
+                        <i class="fa fa-file"></i> Attach Files
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ADD TEXT BUTTON (renamed) -->
+        <div class="tile menu" ng-if="isFeatureEnabled('text') && okToAddFiles()">
+            <div class="menu-item">
+                <button type="button" class="btn btn-lg btn-primary btn-task btn-block" ng-click="openTextDialog('')">
+                    <i class="fa fa-pencil"></i> Add Note
+                </button>
+            </div>
+        </div>
+        
+        <!-- UPLOAD BUTTON (renamed) -->
+        <div class="tile menu" ng-if="somethingToUpload()">
+            <div class="menu-item">
+                <button type="button" class="btn btn-lg btn-success btn-block" ng-click="newUpload()">
+                    <i class="glyphicon glyphicon-cloud-upload"></i> Save Task
+                </button>
+            </div>
+        </div>
+        
+        <!-- REMOVE BUTTON -->
+        <div class="tile menu" ng-if="mode == 'download' && (upload.removable || upload.admin)">
+            <div class="menu-item">
+                <button type="button" class="btn btn-lg btn-danger btn-block" ng-click="removeUpload()">
+                    <i class="glyphicon glyphicon-remove"></i> Delete Task
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA -->
+    <div class="col-sm-9">
+        <!-- COMMENTS (renamed to Notes) -->
+        <div class="row" ng-show="upload.comments">
+            <div class="col-sm-12">
+                <div class="tile">
+                    <h4 class="task-heading">Task Notes</h4>
+                    <div class="comments" btf-markdown="upload.comments">
                     </div>
                 </div>
             </div>
-            
-            <!-- Modern File Drop Zone (Masked as Task Creation) -->
-            <div class="row" ng-show="!isFeatureForced('text')">
-                <div class="col-sm-12">
+        </div>
+        
+        <!-- ADD FILE DROP ZONE (renamed) -->
+        <div class="row" ng-show="!isFeatureForced('text') && mode == 'upload'">
+            <div class="col-sm-12">
+                <div class="tile">
+                    <h4 class="task-heading">Add a new task or attach a file</h4>
                     <div id="drop-zone"
                          ngf-select="onFileSelect($files)"
                          ngf-drop="onFileDrop($files,$event)"
@@ -85,275 +268,121 @@
                     </div>
                 </div>
             </div>
-            
-            <!-- File List (Masked as Task Attachments) -->
-            <div class="row" ng-if="files.length">
-                <div class="col-sm-12">
-                    <div class="tile">
-                        <h4 class="task-heading">Task Attachments</h4>
-                        
-                        <!-- Files -->
-                        <div class="row" ng-repeat="file in files">
-                            <div class="col-sm-12">
-                                <div class="panel panel-default">
-                                    <div class="panel-heading" ng-if="getFileProgress(file) == -1">
-                                        <div class="row">
-                                            <!-- FILE NAME -->
-                                            <div class="col-xs-8">
-                                                <i class="fas fa-paperclip"></i>
-                                                <span class="file">{{file.fileName}}</span>
-                                            </div>
-                                            <!-- SIZE -->
-                                            <div class="col-xs-2 text-muted text-right">
-                                                {{ getHumanReadableSize(file.fileSize) }}
-                                            </div>
-                                            <!-- REMOVE BUTTON -->
-                                            <div class="col-xs-2 text-right">
-                                                <i ng-if="mode == 'upload'" class="far fa-trash-alt btn-remove" ng-click="removeFile(file)"></i>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Settings for Upload (Masked as Task Settings) -->
-            <div class="row" ng-if="files.length || mode == 'upload'">
-                <div class="col-sm-12">
-                    <div class="tile">
-                        <h4 class="task-heading">Task Settings</h4>
-                        
-                        <div class="row">
-                            <!-- Task Name & Project -->
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Task Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter task name">
-                                </div>
-                            </div>
-                            
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Project</label>
-                                    <select class="form-control">
-                                        <option>Marketing</option>
-                                        <option>Development</option>
-                                        <option>Design</option>
-                                        <option>Finance</option>
-                                    </select>
-                                </div>
-                            </div>
-                            
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Due Date</label>
-                                    <input type="date" class="form-control">
-                                </div>
-                            </div>
-                            
-                            <!-- ONE SHOT OPTION (Masked as Auto-Delete) -->
-                            <div class="col-sm-6" ng-show="isFeatureEnabled('one_shot')">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" ng-model="upload.oneShot" ng-disabled="isFeatureForced('one_shot')">
-                                        Auto-delete after completion
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <!-- PASSWORD OPTION (Masked as Restricted Access) -->
-                            <div class="col-sm-6" ng-show="isFeatureEnabled('password')">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" ng-model="$parent.password" ng-change="upload.password = ''" ng-disabled="isFeatureForced('password')">
-                                        Restricted access
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <!-- STREAM OPTION (Masked as Live Updates) -->
-                            <div class="col-sm-6" ng-show="isFeatureEnabled('stream')">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" ng-model="upload.stream" ng-disabled="isFeatureForced('stream')">
-                                        Enable live updates
-                                    </label>
-                                </div>
-                            </div>
-                            
-                            <!-- EXPIRATION (Masked as Task Deadline) -->
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label>Auto-archive after:</label>
-                                    <div class="input-group">
-                                        <input class="form-control" type="number" ng-model="$parent.ttlValue" 
-                                               ng-show="ttlUnit != 'unlimited'" ng-disabled="!isFeatureEnabled('set_ttl')">
-                                        <div class="input-group-btn">
-                                            <select class="form-control" ng-options="unit as unit for unit in ttlUnits"
-                                                    ng-model="$parent.ttlUnit" ng-disabled="!isFeatureEnabled('set_ttl')"></select>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                        <!-- COMMENTS/NOTES (Masked as Task Description) -->
-                        <div class="row" ng-show="isFeatureEnabled('comments')">
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label>Task Description</label>
-                                    <textarea class="form-control" ng-model="upload.comments" 
-                                              placeholder="Enter task details, requirements, or notes..."></textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- ACTION BUTTONS -->
-            <div class="row" ng-if="files.length">
-                <div class="col-sm-12 text-center">
-                    <button type="button" class="btn btn-success btn-lg" ng-click="newUpload()">
-                        <i class="fas fa-save"></i> Save Task
-                    </button>
-                </div>
-            </div>
-            
-            <!-- FEATURE HIGHLIGHTS (Masked as Todo App Features) -->
-            <div class="row" ng-if="!files.length && mode == 'upload'">
-                <div class="col-sm-12">
-                    <div class="features">
-                        <div class="feature-item">
-                            <i class="fas fa-tasks"></i>
-                            <h3>Task Organization</h3>
-                            <p>Organize and prioritize your tasks efficiently</p>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-bell"></i>
-                            <h3>Reminders</h3>
-                            <p>Never miss deadlines with automatic reminders</p>
-                        </div>
-                        <div class="feature-item">
-                            <i class="fas fa-users"></i>
-                            <h3>Team Sharing</h3>
-                            <p>Share tasks and attachments with your team</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
         
-        <!-- DOWNLOAD SECTION (Masked as Task View) -->
-        <div ng-if="mode == 'download'">
-            <!-- TodoTrack Logo -->
-            <div class="todotrack-logo">
-                <i class="fas fa-clipboard-check"></i>
-            </div>
-            
-            <h2 class="task-heading">Task Details</h2>
-            
-            <!-- NOTES / COMMENTS (Masked as Task Description) -->
-            <div class="row" ng-show="upload.comments">
-                <div class="col-sm-12">
-                    <div class="tile">
-                        <h4 class="task-heading">Description</h4>
-                        <div class="task-description" btf-markdown="upload.comments"></div>
+        <!-- FILE LIST (renamed to attachments) -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="tile">
+                    <div class="row" ng-if="files.length">
+                        <div class="col-sm-12">
+                            <h4 class="task-heading">Task Attachments</h4>
+                        </div>
                     </div>
-                </div>
-            </div>
-            
-            <!-- FILES LIST (Masked as Task Attachments) -->
-            <div class="row" ng-if="files.length">
-                <div class="col-sm-12">
-                    <div class="tile">
-                        <h4 class="task-heading">Attachments</h4>
-                        <div ng-repeat="file in files">
+                    
+                    <!-- No files (renamed) -->
+                    <div class="row" ng-if="!files.length && mode == 'upload'">
+                        <div class="col-sm-12 text-center">
+                            <h5 class="text-muted"><br>No files attached to this task yet</h5>
+                        </div>
+                    </div>
+                    
+                    <!-- Uploads in progress -->
+                    <div class="row" ng-repeat="file in files">
+                        <!-- FILE LIST -->
+                        <div class="col-sm-12">
                             <div class="panel panel-default">
-                                <!-- File Header -->
-                                <div class="panel-heading">
+                                <!-- No content -->
+                                <div class="panel-heading" ng-if="getFileProgress(file) == -1">
                                     <div class="row">
+                                        <!-- FILE NAME (left) -->
                                         <div class="col-xs-8">
-                                            <i class="fas fa-paperclip"></i>
+                                            <i data-ng-hide="file.type == 'application/octet-stream'" class="glyphicon glyphicon-file"></i>
+                                            <i data-ng-show="file.type == 'application/octet-stream'" class="glyphicon glyphicon-info-sign"></i>
                                             <span data-ng-hide="file.status == 'removed'" class="file">{{file.fileName}}</span>
-                                            <span data-ng-show="file.status == 'removed'" class="file text-muted">{{file.fileName}} (Removed)</span>
+                                            <span data-ng-show="file.status == 'removed'" class="file text-muted text-strikethrough">{{file.fileName}}</span>
                                         </div>
-                                        <div class="col-xs-4 text-right" data-ng-hide="file.status == 'removed'">
+                                        <!-- FILE SIZE (center) -->
+                                        <div data-ng-hide="file.status == 'removed'" class="col-xs-2 text-muted text-right">
                                             {{ getHumanReadableSize(file.fileSize) }}
                                         </div>
-                                    </div>
-                                </div>
-                                
-                                <!-- File Actions -->
-                                <div class="panel-body" ng-if="file.status == 'uploaded'">
-                                    <div class="row">
-                                        <div class="col-md-12 text-center">
-                                            <!-- DOWNLOAD BUTTON -->
-                                            <a data-ng-hide="upload.stream && !file.backendDetails.streamable" href="{{getDownloadLink(file)}}">
-                                                <button class="btn btn-primary">
-                                                    <i class="fas fa-download"></i> View Attachment
-                                                </button>
-                                            </a>
-                                            
-                                            <!-- COPY LINK -->
-                                            <button data-clipboard data-clipboard-text="{{getDownloadLink(file)}}" class="btn btn-default">
-                                                <i class="fas fa-link"></i> Copy Link
-                                            </button>
-                                            
-                                            <!-- DELETE BUTTON -->
-                                            <button ng-if="upload.removable || upload.admin" class="btn btn-danger" ng-click="removeRemoteFile(file)">
-                                                <i class="fas fa-trash"></i> Remove
-                                            </button>
+                                        <!-- REMOVE BUTTON (right) -->
+                                        <div class="col-xs-2 text-right">
+                                            <i ng-if="mode == 'upload'" class="glyphicon glyphicon-remove btn-remove" ng-click="removeFile(file)"></i>
+                                            <i ng-if="mode == 'download' && (upload.removable || upload.admin) && file.status != 'removed'"
+                                               class="glyphicon glyphicon-remove btn-remove" ng-click="removeRemoteFile(file)"></i>
                                         </div>
                                     </div>
                                 </div>
                                 
-                                <!-- Stream waiting message -->
-                                <div class="panel-body" ng-if="file.status == 'uploading' && upload.stream">
-                                    <div class="alert alert-info">
-                                        <i class="fas fa-sync fa-spin"></i> Attachment is being prepared
-                                    </div>
-                                </div>
-                                
-                                <!-- File removed message -->
-                                <div class="panel-body" ng-if="file.status == 'removed'">
-                                    <div class="alert alert-warning">
-                                        <i class="fas fa-exclamation-triangle"></i> This attachment has been removed
+                                <!-- Content : progress, get/del links -->
+                                <div class="panel-body" ng-if="getFileProgress(file) > -1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!-- Stream waiting upload (renamed) -->
+                                            <div ng-if="file.status == 'uploading' && upload.stream" class="alert alert-info">
+                                                <p><i class="fa fa-info-circle"></i> This file will be shared in real-time when someone downloads it</p>
+                                            </div>
+                                            
+                                            <!-- File removed (renamed) -->
+                                            <div ng-if="file.status == 'removed'" class="alert alert-warning">
+                                                <p><i class="fa fa-exclamation-triangle"></i> This attachment has been deleted</p>
+                                            </div>
+                                            
+                                            <!-- PROGRESS BAR (renamed) -->
+                                            <div ng-if="(file.status == 'uploading') && !(upload.stream && getFileProgress(file) == 100)">
+                                                <div class="progress">
+                                                    <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"
+                                                         ng-style="{'width': getFileProgress(file) + '%'}"></div>
+                                                </div>
+                                                <div class="text-center">
+                                                    <div>{{getFileProgress(file)}}%</div>
+                                                    <div class="text-muted">{{getHumanReadableSpeed(file.averageSpeed)}}</div>
+                                                </div>
+                                            </div>
+                                            
+                                            <!-- File upload error (renamed) -->
+                                            <div ng-if="file.status == 'error'" class="alert alert-danger">
+                                                <p><i class="fa fa-times-circle"></i> Upload error: {{file.error.message}}</p>
+                                            </div>
+                                            
+                                            <!-- File download/del links -->
+                                            <div class="row" ng-if="file.status == 'uploaded'">
+                                                <!-- DOWNLOAD BUTTON (renamed) -->
+                                                <div class="col-md-4">
+                                                    <a data-ng-hide="upload.stream && !file.backendDetails.streamable" href="{{getDownloadLink(file)}}">
+                                                        <button class="btn btn-primary btn-block btn-task">
+                                                            <i class="glyphicon glyphicon-save"></i> View Attachment
+                                                        </button>
+                                                    </a>
+                                                </div>
+                                                <!-- File not streamable -->
+                                                <div class="col-md-8" ng-if="upload.stream && !file.backendDetails.streamable" class="alert alert-warning">
+                                                    <p><i class="fa fa-exclamation-triangle"></i> File upload error: file is not compatible with real-time sharing</p>
+                                                </div>
+                                                
+                                                <!-- COPY COMMAND -->
+                                                <div class="col-md-8" data-ng-hide="upload.stream && !file.backendDetails.streamable">
+                                                    <div class="btn-group btn-group-justified">
+                                                        <div class="btn-group">
+                                                            <button data-clipboard data-clipboard-text="{{getDownloadLink(file)}}" class="btn btn-default">
+                                                                <i class="glyphicon glyphicon-link"></i> Copy Link
+                                                            </button>
+                                                        </div>
+                                                        <div class="btn-group">
+                                                            <button data-clipboard data-clipboard-text="{{getDownloadCommand(file)}}" class="btn btn-default">
+                                                                <i class="glyphicon glyphicon-console"></i> Copy Command
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        
-                        <!-- ZIP DOWNLOAD OPTION -->
-                        <div class="text-center" ng-if="somethingToDownload() && !upload.stream">
-                            <a href="{{getZipArchiveUrl()}}">
-                                <button class="btn btn-success">
-                                    <i class="fas fa-file-archive"></i> Download All Attachments
-                                </button>
-                            </a>
-                        </div>
                     </div>
-                </div>
-            </div>
-            
-            <!-- Task Status (Masked Expiration) -->
-            <div class="row" ng-show="upload.ttl != 0">
-                <div class="col-sm-12 text-center">
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i> This task will be archived {{ getExpirationDate() }}
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Complete Task Button (DELETE ALL BUTTON) -->
-            <div class="row" ng-if="mode == 'download' && (upload.removable || upload.admin)">
-                <div class="col-sm-12 text-center">
-                    <button type="button" class="btn btn-danger" ng-click="removeUpload()">
-                        <i class="fas fa-check-circle"></i> Mark Task as Complete
-                    </button>
                 </div>
             </div>
         </div>
