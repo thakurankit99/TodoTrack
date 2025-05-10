@@ -166,11 +166,6 @@ plik.controller('MainCtrl', ['$scope', '$api', '$config', '$route', '$location',
                         $scope.mode = 'upload';
                         $scope.$apply();
                     }
-                    
-                    // Scroll to the file list
-                    setTimeout(function() {
-                        $scope.scrollToDropZone();
-                    }, 300);
                 }
             });
         };
