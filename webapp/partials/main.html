@@ -12,13 +12,6 @@
                 </select>
             </div>
             
-            <!-- Add new task -->
-            <div class="todo-add-task">
-                <div class="input-group">
-                    <input type="text" class="form-control" ng-model="newTaskText" placeholder="Add a new task..." ng-keyup="$event.keyCode == 13 && addTask()">
-                </div>
-            </div>
-            
             <!-- Task list -->
             <div class="todo-item" ng-repeat="task in todoTasks">
                 <input type="checkbox" class="todo-checkbox" ng-checked="task.completed" ng-click="toggleTaskCompletion(task.id)">
