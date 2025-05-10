@@ -557,6 +557,31 @@ footer {
     font-size: 20px !important;
 }
 
+/* Settings Button (Blue) */
+.settings-btn {
+    background-color: #ffffff !important;
+    border: 2px solid #3a73f9 !important;
+    color: #3a73f9 !important;
+    border-radius: 8px !important;
+    margin-top: 10px !important;
+    width: 46px !important;
+    height: 46px !important;
+    padding: 0 !important;
+    line-height: 44px !important;
+    text-align: center !important;
+    transition: all 0.2s ease !important;
+}
+
+.settings-btn:hover {
+    background-color: #3a73f9 !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+}
+
+.settings-btn i {
+    font-size: 20px !important;
+}
+
 /* Task title clickable */
 .task-title {
     cursor: pointer !important;

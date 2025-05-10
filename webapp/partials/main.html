@@ -26,116 +26,6 @@
             </div>
         </div>
         
-        <!-- UPLOAD MENU (renamed as task settings) -->
-        <div class="tile menu" ng-if="mode == 'upload'">
-            <h4 class="task-heading">Task Settings</h4>
-            
-            <!-- Date selector for tasks -->
-            <div class="date-selector">
-                <label>Due date:</label>
-                <input type="date" class="form-control">
-            </div>
-            
-            <!-- ONE SHOT (renamed) -->
-            <div class="menu-item" ng-show="isFeatureEnabled('one_shot')">
-                <label class="switch-input">
-                    <input name="checkbox-destruct" type="checkbox" ng-model="upload.oneShot" ng-disabled="isFeatureForced('one_shot')">
-                    <i data-swoff-text="OFF" data-swon-text="ON"></i> Delete after first view
-                    <a tooltip-placement="right"
-                       uib-tooltip="The task will be removed after being viewed once.">?</a>
-                </label>
-            </div>
-            
-            <!-- STREAMING (renamed) -->
-            <div class="menu-item" ng-show="isFeatureEnabled('stream')">
-                <label class="switch-input">
-                    <input name="checkbox-destruct" type="checkbox" ng-model="upload.stream" ng-disabled="isFeatureForced('stream')">
-                    <i data-swoff-text="OFF" data-swon-text="ON"></i> Real-time sharing
-                    <a tooltip-placement="right"
-                       uib-tooltip="The attachments won't be stored - they'll be shared in real-time when viewed.">?</a>
-                </label>
-            </div>
-            
-            <!-- REMOVABLE (renamed) -->
-            <div class="menu-item" ng-show="isFeatureEnabled('removable')">
-                <label class="switch-input">
-                    <input name="checkbox-removable" type="checkbox" ng-model="upload.removable" ng-disabled="isFeatureForced('removable')">
-                    <i data-swoff-text="OFF" data-swon-text="ON"></i> Allow deletion
-                    <a tooltip-placement="right"
-                       uib-tooltip="Allow task to be deleted at any time.">?</a>
-                </label>
-            </div>
-            
-            <!-- PASSWORD (renamed) -->
-            <div class="menu-item" ng-show="isFeatureEnabled('password')">
-                <label class="switch-input">
-                    <input name="checkbox-password" type="checkbox" ng-model="$parent.password"
-                           ng-change="upload.password = ''" ng-disabled="isFeatureForced('password')">
-                    <i data-swoff-text="OFF" data-swon-text="ON"></i> Require password
-                    <a tooltip-placement="right"
-                       uib-tooltip="Password protect this task and its attachments.">?</a>
-                </label>
-            </div>
-            
-            <!-- EXTEND TTL (renamed) -->
-            <div class="menu-item" ng-show="isFeatureEnabled('extend_ttl')">
-                <label class="switch-input">
-                    <input name="checkbox-removable" type="checkbox" ng-model="upload.extend_ttl" ng-disabled="isFeatureForced('extend_ttl')">
-                    <i data-swoff-text="OFF" data-swon-text="ON"></i> Extend deadline on view
-                    <a tooltip-placement="right"
-                       uib-tooltip="Extend task deadline when viewed.">?</a>
-                </label>
-            </div>
-            
-            <!-- COMMENTS (renamed) -->
-            <div class="menu-item" ng-show="isFeatureEnabled('comments')">
-                <label class="switch-input">
-                    <input name="checkbox-comments" type="checkbox" ng-model="enableComments" ng-disabled="isFeatureForced('comments')">
-                    <i data-swoff-text="OFF" data-swon-text="ON"></i> Task notes
-                    <a tooltip-placement="right"
-                       uib-tooltip="Add notes to the task. Markdown is supported.">?</a>
-                </label>
-            </div>
-            
-            <div class="menu-item" ng-if="enableComments=='1'">
-                <textarea class="form-control" ng-model="upload.comments" placeholder="Add task notes here..."></textarea>
-            </div>
-            
-            <!-- EXPIRATION TIME (renamed) -->
-            <div class="menu-item">
-                <p></p>
-
-                <div class="" style="text-align:center;">
-                    <form class="form-inline">
-                        <div class="form-group">
-                            Task will expire in 
-                            <div style="display:inline-block;">
-                                <input class="form-control" style="width:60px;display:inline-block;" type="number"
-                                       ng-model="$parent.ttlValue" ng-show="ttlUnit != 'unlimited'"
-                                       ng-disabled="!isFeatureEnabled('set_ttl')">
-                                <select class="form-control" style="width:auto;display:inline-block;"
-                                        ng-options="unit as unit for unit in ttlUnits"
-                                        ng-model="$parent.ttlUnit"
-                                        ng-disabled="!isFeatureEnabled('set_ttl')"></select>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-            
-            <!-- CREATE EMPTY UPLOAD (renamed) -->
-            <div class="menu-item">
-                <p></p>
-
-                <div class="" style="text-align:center;">
-                    <a href="" class="small" ng-click="newUpload(true);"
-                       tooltip-placement="bottom" uib-tooltip="Create a task without attachments yet.">
-                        Create empty task
-                    </a>
-                </div>
-            </div>
-        </div>
-        
         <!-- DOWNLOAD MENU (renamed to task details) -->
         <div class="tile menu" ng-if="mode == 'download'">
             <h4 class="task-heading">Task Details</h4>
@@ -229,6 +119,10 @@
                             <!-- Yellow/Red Button (Add Task) -->
                             <button class="btn btn-lg add-task-btn" id="add-task-btn" ng-click="addNewTask()" title="Add Task">
                                 <i class="glyphicon glyphicon-plus"></i>
+                            </button>
+                            <!-- Settings Button -->
+                            <button class="btn btn-lg settings-btn" id="settings-btn" title="Task Settings" ng-click="openSettingsModal()">
+                                <i class="glyphicon glyphicon-cog"></i>
                             </button>
                         </div>
                     </div>
@@ -365,3 +259,111 @@
         </div>
     </div>
 </div>
+
+<!-- Settings Modal -->
+<script type="text/ng-template" id="taskSettingsModal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Task Settings</h3>
+    </div>
+    <div class="modal-body">
+        <!-- Date selector for tasks -->
+        <div class="date-selector">
+            <label>Due date:</label>
+            <input type="date" class="form-control">
+        </div>
+        
+        <!-- ONE SHOT (renamed) -->
+        <div class="menu-item" ng-show="isFeatureEnabled('one_shot')">
+            <label class="switch-input">
+                <input name="checkbox-destruct" type="checkbox" ng-model="upload.oneShot" ng-disabled="isFeatureForced('one_shot')">
+                <i data-swoff-text="OFF" data-swon-text="ON"></i> Delete after first view
+                <a tooltip-placement="right"
+                    uib-tooltip="The task will be removed after being viewed once.">?</a>
+            </label>
+        </div>
+        
+        <!-- STREAMING (renamed) -->
+        <div class="menu-item" ng-show="isFeatureEnabled('stream')">
+            <label class="switch-input">
+                <input name="checkbox-destruct" type="checkbox" ng-model="upload.stream" ng-disabled="isFeatureForced('stream')">
+                <i data-swoff-text="OFF" data-swon-text="ON"></i> Real-time sharing
+                <a tooltip-placement="right"
+                    uib-tooltip="The attachments won't be stored - they'll be shared in real-time when viewed.">?</a>
+            </label>
+        </div>
+        
+        <!-- REMOVABLE (renamed) -->
+        <div class="menu-item" ng-show="isFeatureEnabled('removable')">
+            <label class="switch-input">
+                <input name="checkbox-removable" type="checkbox" ng-model="upload.removable" ng-disabled="isFeatureForced('removable')">
+                <i data-swoff-text="OFF" data-swon-text="ON"></i> Allow deletion
+                <a tooltip-placement="right"
+                    uib-tooltip="Allow task to be deleted at any time.">?</a>
+            </label>
+        </div>
+        
+        <!-- PASSWORD (renamed) -->
+        <div class="menu-item" ng-show="isFeatureEnabled('password')">
+            <label class="switch-input">
+                <input name="checkbox-password" type="checkbox" ng-model="$parent.password"
+                        ng-change="upload.password = ''" ng-disabled="isFeatureForced('password')">
+                <i data-swoff-text="OFF" data-swon-text="ON"></i> Require password
+                <a tooltip-placement="right"
+                    uib-tooltip="Password protect this task and its attachments.">?</a>
+            </label>
+        </div>
+        
+        <!-- EXTEND TTL (renamed) -->
+        <div class="menu-item" ng-show="isFeatureEnabled('extend_ttl')">
+            <label class="switch-input">
+                <input name="checkbox-removable" type="checkbox" ng-model="upload.extend_ttl" ng-disabled="isFeatureForced('extend_ttl')">
+                <i data-swoff-text="OFF" data-swon-text="ON"></i> Extend deadline on view
+                <a tooltip-placement="right"
+                    uib-tooltip="Extend task deadline when viewed.">?</a>
+            </label>
+        </div>
+        
+        <!-- COMMENTS (renamed) -->
+        <div class="menu-item" ng-show="isFeatureEnabled('comments')">
+            <label class="switch-input">
+                <input name="checkbox-comments" type="checkbox" ng-model="enableComments" ng-disabled="isFeatureForced('comments')">
+                <i data-swoff-text="OFF" data-swon-text="ON"></i> Task notes
+                <a tooltip-placement="right"
+                    uib-tooltip="Add notes to the task. Markdown is supported.">?</a>
+            </label>
+        </div>
+        
+        <div class="menu-item" ng-if="enableComments=='1'">
+            <textarea class="form-control" ng-model="upload.comments" placeholder="Add task notes here..."></textarea>
+        </div>
+        
+        <!-- EXPIRATION TIME (renamed) -->
+        <div class="menu-item">
+            <p></p>
+            <div class="" style="text-align:center;">
+                <form class="form-inline">
+                    <div class="form-group">
+                        Task will expire in 
+                        <div style="display:inline-block;">
+                            <input class="form-control" style="width:60px;display:inline-block;" type="number"
+                                ng-model="$parent.ttlValue" ng-show="ttlUnit != 'unlimited'"
+                                ng-disabled="!isFeatureEnabled('set_ttl')">
+                            <select class="form-control" style="width:auto;display:inline-block;"
+                                ng-options="unit as unit for unit in ttlUnits"
+                                ng-model="$parent.ttlUnit"
+                                ng-disabled="!isFeatureEnabled('set_ttl')"></select>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <div class="text-center">
+            <a href="" class="small" ng-click="newUpload(true);">
+                Create empty task
+            </a>
+        </div>
+        <button class="btn btn-primary" ng-click="$close()">Close</button>
+    </div>
+</script>

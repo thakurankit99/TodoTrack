@@ -902,5 +902,51 @@ plik.controller('MainCtrl', ['$scope', '$api', '$config', '$route', '$location',
                 $scope.openTextDialog();
             }
         })
+
+        // Open settings modal
+        $scope.openSettingsModal = function() {
+            $dialog.openDialog({
+                backdrop: true,
+                backdropClick: true,
+                templateUrl: 'taskSettingsModal.html',
+                controller: 'SettingsModalController',
+                resolve: {
+                    args: function() {
+                        return {
+                            upload: $scope.upload,
+                            password: $scope.password,
+                            enableComments: $scope.enableComments,
+                            ttlValue: $scope.ttlValue,
+                            ttlUnit: $scope.ttlUnit,
+                            ttlUnits: $scope.ttlUnits,
+                            isFeatureEnabled: $scope.isFeatureEnabled,
+                            isFeatureForced: $scope.isFeatureForced,
+                            newUpload: $scope.newUpload
+                        };
+                    }
+                }
+            });
+        };
+    }
+]);
+
+// Settings Modal Controller
+plik.controller('SettingsModalController', ['$scope', '$uibModalInstance', 'args', 
+    function ($scope, $uibModalInstance, args) {
+        // Initialize from args
+        $scope.upload = args.upload;
+        $scope.password = args.password;
+        $scope.enableComments = args.enableComments;
+        $scope.ttlValue = args.ttlValue;
+        $scope.ttlUnit = args.ttlUnit;
+        $scope.ttlUnits = args.ttlUnits;
+        $scope.isFeatureEnabled = args.isFeatureEnabled;
+        $scope.isFeatureForced = args.isFeatureForced;
+        $scope.newUpload = args.newUpload;
+        
+        // Close the modal
+        $scope.close = function() {
+            $uibModalInstance.close();
+        };
     }
 ]);
