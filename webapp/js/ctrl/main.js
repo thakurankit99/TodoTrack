@@ -390,6 +390,11 @@ plik.controller('MainCtrl', ['$scope', '$api', '$config', '$route', '$location',
                         })
                 }, discard);
         };
+        
+        // Remove a remote file (alias for deleteFile for backward compatibility)
+        $scope.removeRemoteFile = function (file) {
+            $scope.deleteFile(file);
+        };
 
         // Check if file is downloadable
         $scope.isDownloadable = function (file) {
@@ -474,6 +479,27 @@ plik.controller('MainCtrl', ['$scope', '$api', '$config', '$route', '$location',
         $scope.getZipArchiveUrl = function (dl) {
             if (!$scope.upload.id) return;
             return getFileUrl("archive", $scope.upload.id, null, "archive.zip", dl);
+        };
+
+        // Return file upload progress or -1 if none
+        $scope.getFileProgress = function (file) {
+            if (!file) return -1;
+            if (file.status === "uploading" && !_.isUndefined(file.progress)) {
+                return file.progress;
+            }
+            if (file.status === "uploading" && _.isUndefined(file.progress)) {
+                return 0;
+            }
+            if (file.status === "uploaded") {
+                return 100;
+            }
+            return -1;
+        };
+        
+        // Return human readable speed
+        $scope.getHumanReadableSpeed = function (speed) {
+            if (!speed) return "";
+            return getHumanReadableSize(speed) + "/s";
         };
 
         // Return QR Code image url
