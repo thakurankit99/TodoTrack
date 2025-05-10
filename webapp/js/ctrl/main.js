@@ -88,27 +88,27 @@ plik.controller('MainCtrl', ['$scope', '$api', '$config', '$route', '$location',
             }
         };
         
-        // Scroll to drop zone when attachment button is clicked
+        // Handle attachment button click - open file selection dialog
         $scope.scrollToDropZone = function() {
-            // Instead of scrolling to drop-zone (which we removed), 
-            // we now scroll to the attachments section
-            $('html, body').animate({
-                scrollTop: $('.tile:contains("Task Attachments")').offset().top - 100
-            }, 500);
+            // Create a hidden file input element
+            var fileInput = document.createElement('input');
+            fileInput.type = 'file';
+            fileInput.multiple = true;
+            fileInput.style.display = 'none';
+            document.body.appendChild(fileInput);
             
-            // Display a prompt to drag files anywhere
-            var $notification = $('<div class="alert alert-info fade in" style="margin-top:20px;">' +
-                                '<button type="button" class="close" data-dismiss="alert">&times;</button>' +
-                                '<i class="glyphicon glyphicon-info-sign"></i> ' +
-                                'Drag and drop files anywhere on the page to upload them!' +
-                                '</div>');
-                                
-            $('.tile:contains("Task Attachments")').prepend($notification);
+            // Add change event handler
+            $(fileInput).on('change', function(e) {
+                if (e.target.files.length > 0) {
+                    $scope.onFileSelect(Array.from(e.target.files));
+                    $scope.$apply();
+                }
+                // Remove the element after use
+                $(fileInput).remove();
+            });
             
-            // Auto-dismiss after 5 seconds
-            setTimeout(function() {
-                $notification.alert('close');
-            }, 5000);
+            // Trigger the file selection dialog
+            fileInput.click();
         };
 
         // Initialize global drag and drop functionality
