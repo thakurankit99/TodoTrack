@@ -1,0 +1,21 @@
+version: '3'
+
+services:
+  todotrack:
+    image: ankitosm/todotrack:latest
+    container_name: todotrack
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - todotrack-data:/home/todotrack/server/files
+    restart: unless-stopped
+    environment:
+      # You can override config here if needed
+      - PLIKD_DEBUG=false
+
+volumes:
+  todotrack-data:
+    # This will create a named volume for persistent storage 

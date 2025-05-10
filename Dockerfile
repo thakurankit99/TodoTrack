@@ -35,15 +35,25 @@ ENV CC=$CC
 # Add the source code ( see .dockerignore )
 COPY . .
 
-RUN releaser/releaser.sh
-
-##################################################################################
-FROM scratch AS todotrack-release-archive
-
-COPY --from=todotrack-builder --chown=1000:1000 /go/src/github.com/root-gg/plik/plik-*.tar.gz /
+# Instead of using releaser/releaser.sh which relies on Git tags, 
+# directly build the server and client
+RUN mkdir -p release/server && \
+    mkdir -p release/clients && \
+    mkdir -p release/changelog && \
+    mkdir -p release/webapp && \
+    go build -o release/server/plikd server/main.go && \
+    cp server/plikd.cfg release/server/ && \
+    cp -r webapp/dist release/webapp/ && \
+    cp -r changelog release/ && \
+    cp README.md release/ && \
+    # Create directory for file storage
+    mkdir -p release/server/files
 
 ##################################################################################
 FROM alpine:3.18 AS todotrack-image
+
+LABEL maintainer="ankitosm"
+LABEL description="TodoTrack - Task management with secure file sharing"
 
 RUN apk add --no-cache ca-certificates
 
@@ -60,9 +70,22 @@ RUN adduser \
     --uid "${UID}" \
     "${USER}"
 
+# Copy files from builder
 COPY --from=todotrack-builder --chown=1000:1000 /go/src/github.com/root-gg/plik/release /home/todotrack/
 
+# Create necessary directories with proper permissions
+RUN mkdir -p /home/todotrack/server/files && \
+    chown -R todotrack:todotrack /home/todotrack
+
+# Set the version information
+ENV PLIK_VERSION="TodoTrack-1.0"
+
+# Expose default port
 EXPOSE 8080
+
+# Switch to non-root user
 USER todotrack
 WORKDIR /home/todotrack/server
-CMD ./plikd
+
+# Run the server
+CMD ["./plikd"]
