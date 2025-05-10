@@ -470,3 +470,87 @@ footer {
 .todo-item:hover .btn-task-delete {
     opacity: 1;
 }
+
+/* Task Detail Panel */
+.task-detail-panel {
+    border: 1px solid #e2e8f0 !important;
+    padding: 20px !important;
+    margin-bottom: 25px !important;
+}
+
+.task-title-input {
+    font-size: 16px !important;
+    padding: 12px 15px !important;
+    border: 1px solid #e2e8f0 !important;
+    border-radius: 8px !important;
+    width: 100% !important;
+    transition: all 0.2s ease !important;
+}
+
+.task-title-input:focus {
+    border-color: #3a73f9 !important;
+    box-shadow: 0 0 0 3px rgba(58, 115, 249, 0.15) !important;
+    outline: none !important;
+}
+
+/* Attachment Button (Green) */
+.attachment-btn {
+    background-color: #ffffff !important;
+    border: 2px solid #22c55e !important;
+    color: #22c55e !important;
+    border-radius: 8px !important;
+    margin-right: 10px !important;
+    width: 46px !important;
+    height: 46px !important;
+    padding: 0 !important;
+    line-height: 44px !important;
+    text-align: center !important;
+    transition: all 0.2s ease !important;
+}
+
+.attachment-btn:hover {
+    background-color: #22c55e !important;
+    color: white !important;
+    transform: translateY(-2px) !important;
+}
+
+.attachment-btn i {
+    font-size: 20px !important;
+}
+
+/* Add Task Button (Red) */
+.add-task-btn {
+    background-color: #ef4444 !important;
+    border: 2px solid #ef4444 !important;
+    color: white !important;
+    border-radius: 8px !important;
+    width: 46px !important;
+    height: 46px !important;
+    padding: 0 !important;
+    line-height: 44px !important;
+    text-align: center !important;
+    transition: all 0.2s ease !important;
+}
+
+.add-task-btn:hover {
+    background-color: #dc2626 !important;
+    border-color: #dc2626 !important;
+    transform: translateY(-2px) !important;
+}
+
+.add-task-btn i {
+    font-size: 20px !important;
+}
+
+/* Task title clickable */
+.task-title {
+    cursor: pointer !important;
+    flex-grow: 1 !important;
+    padding: 2px 6px !important;
+    border-radius: 4px !important;
+    transition: all 0.2s ease !important;
+}
+
+.task-title:hover {
+    background-color: #f0f7ff !important;
+}

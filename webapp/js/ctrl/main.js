@@ -22,6 +22,8 @@ plik.controller('MainCtrl', ['$scope', '$api', '$config', '$route', '$location',
         $scope.newTaskText = "";
         $scope.selectedProject = "All Projects";
         $scope.availableProjects = [];
+        $scope.selectedTaskTitle = "";
+        $scope.selectedTaskId = null;
         
         // Initialize tasks
         $scope.initTasks = function() {
@@ -40,6 +42,24 @@ plik.controller('MainCtrl', ['$scope', '$api', '$config', '$route', '$location',
             $scope.availableProjects = $tasks.getProjects();
         };
         
+        // Add a new task from the task detail panel
+        $scope.addNewTask = function() {
+            if (!$scope.selectedTaskTitle.trim()) return;
+            
+            var project = $scope.selectedProject === "All Projects" ? "General" : $scope.selectedProject;
+            var newTask = $tasks.add($scope.selectedTaskTitle, project);
+            $scope.selectedTaskTitle = "";
+            $scope.todoTasks = $tasks.all();
+            $scope.availableProjects = $tasks.getProjects();
+            
+            // Show success message
+            $dialog.alert({
+                title: "Success",
+                message: "Task added successfully!",
+                confirm: false
+            });
+        };
+        
         // Toggle task completion
         $scope.toggleTaskCompletion = function(taskId) {
             $scope.todoTasks = $tasks.toggleCompletion(taskId);
@@ -54,6 +74,26 @@ plik.controller('MainCtrl', ['$scope', '$api', '$config', '$route', '$location',
         // Filter tasks by project
         $scope.filterByProject = function() {
             $scope.todoTasks = $tasks.byProject($scope.selectedProject);
+        };
+        
+        // Show task details
+        $scope.showTaskDetails = function(taskId) {
+            var task = $scope.todoTasks.find(function(t) {
+                return t.id === taskId;
+            });
+            
+            if (task) {
+                $scope.selectedTaskTitle = task.title;
+                $scope.selectedTaskId = task.id;
+            }
+        };
+        
+        // Scroll to drop zone when attachment button is clicked
+        $scope.scrollToDropZone = function() {
+            // Using jQuery to scroll to the drop zone element
+            $('html, body').animate({
+                scrollTop: $('#drop-zone').offset().top - 100
+            }, 500);
         };
         
         // Initialize tasks

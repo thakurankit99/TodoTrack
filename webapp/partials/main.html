@@ -25,7 +25,7 @@
             <!-- Task list -->
             <div class="todo-item" ng-repeat="task in todoTasks">
                 <input type="checkbox" class="todo-checkbox" ng-checked="task.completed" ng-click="toggleTaskCompletion(task.id)">
-                <span ng-class="{'todo-completed': task.completed}">{{task.title}}</span>
+                <span ng-class="{'todo-completed': task.completed}" ng-click="showTaskDetails(task.id)" class="task-title">{{task.title}}</span>
                 <span class="task-project-tag" ng-if="task.project != 'General' && selectedProject == 'All Projects'">{{task.project}}</span>
                 <button class="btn-task-delete" ng-click="deleteTask(task.id)"><i class="glyphicon glyphicon-trash"></i></button>
             </div>
@@ -236,6 +236,32 @@
 
     <!-- MAIN CONTENT AREA -->
     <div class="col-sm-9">
+        <!-- Task Detail Section (Red Square Area) -->
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="tile task-detail-panel">
+                    <div class="row">
+                        <div class="col-xs-10">
+                            <h4 class="task-heading">Task Details</h4>
+                            <div class="task-input-container">
+                                <input type="text" class="form-control task-title-input" placeholder="Add a new task or attach a file" ng-model="selectedTaskTitle">
+                            </div>
+                        </div>
+                        <div class="col-xs-2 text-right">
+                            <!-- Green Button (Attachment) -->
+                            <button class="btn btn-lg attachment-btn" id="attachment-btn" title="Add Attachment" ng-click="scrollToDropZone()">
+                                <i class="glyphicon glyphicon-paperclip"></i>
+                            </button>
+                            <!-- Yellow/Red Button (Add Task) -->
+                            <button class="btn btn-lg add-task-btn" id="add-task-btn" ng-click="addNewTask()" title="Add Task">
+                                <i class="glyphicon glyphicon-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
         <!-- COMMENTS (renamed to Notes) -->
         <div class="row" ng-show="upload.comments">
             <div class="col-sm-12">
@@ -251,7 +277,7 @@
         <div class="row" ng-show="!isFeatureForced('text') && mode == 'upload'">
             <div class="col-sm-12">
                 <div class="tile">
-                    <h4 class="task-heading">Add a new task or attach a file</h4>
+                    <h4 class="task-heading">Add attachments</h4>
                     <div id="drop-zone"
                          ngf-select="onFileSelect($files)"
                          ngf-drop="onFileDrop($files,$event)"
